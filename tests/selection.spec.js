@@ -4,6 +4,8 @@ import {
   selectAllBlocks,
   collapseOnEndOffset,
   collapseOnStartOffset,
+  mergeSelection,
+  getSelection,
 } from '../src/selection';
 
 describe('collapseOnEndOffset', () => {
@@ -189,5 +191,68 @@ describe('selectOverlappingEntities', () => {
 describe('selectionHasEntityType', () => {
   it('selectionHasEntityType', () => {
     // selectionHasEntityType()
+  });
+});
+
+describe('mergeSelection', () => {
+  it('should merge a selection', () => {
+    const editorState = new RawContentState()
+      .addBlock('block1')
+      .setKey('key1')
+      .anchorKey(0)
+      .addBlock('block2')
+      .setKey('key2')
+      .addBlock('block3')
+      .setKey('key3')
+      .focusKey(6)
+      .toEditorState();
+
+    const selection = editorState.getSelection().toJS();
+
+    const original = {
+      anchorOffset: 0,
+      focusOffset: 6,
+      anchorKey: 'key1',
+      focusKey: 'key3',
+      hasFocus: false,
+      isBackward: false,
+    };
+    const expected = {
+      anchorOffset: 1,
+      focusOffset: 2,
+      anchorKey: 'key2',
+      focusKey: 'key3',
+      hasFocus: true,
+      isBackward: true,
+    };
+    const result = mergeSelection({
+      anchorOffset: 1,
+      focusOffset: 2,
+      anchorKey: 'key2',
+      focusKey: 'key3',
+      hasFocus: true,
+      isBackward: true,
+    }, editorState).getSelection().toJS();
+
+    expect(selection).to.deep.equal(original);
+    expect(result).to.deep.equal(expected);
+  });
+});
+
+describe('getSelection', () => {
+  it('should get a selection', () => {
+    const editorState = new RawContentState()
+      .addBlock('block1')
+      .setKey('key1')
+      .anchorKey(0)
+      .addBlock('block2')
+      .setKey('key2')
+      .addBlock('block3')
+      .setKey('key3')
+      .focusKey(6)
+      .toEditorState();
+
+    const selection = editorState.getSelection().toJS();
+    expect(selection).to.deep.equal(getSelection(editorState));
   });
 });

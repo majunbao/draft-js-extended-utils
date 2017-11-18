@@ -58,3 +58,13 @@ export const selectAllBlocks = editorState => {
 
   return EditorState.acceptSelection(editorState, newSelection);
 };
+
+export const mergeSelection = (selection = {}, editorState) => {
+  const oldSelection = editorState.getSelection();
+  const newSelection = oldSelection.merge({ ...selection });
+  return EditorState.acceptSelection(editorState, newSelection);
+};
+
+export const getSelection = editorState => {
+  return editorState.getSelection().toJS();
+};

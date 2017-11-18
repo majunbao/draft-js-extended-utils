@@ -17,8 +17,7 @@
 ## Usage
 
 ```javascript
-import Raw from 'draft-js-raw-content-state';
-const rawContentState = new Raw();
+import utils from 'draft-js-utils';
 ```
 
 ### API
@@ -73,11 +72,12 @@ const rawContentState = new Raw();
 - [x] collapsedOnEndOffset
 - [x] collapsedOnStartOffset
 - [x] selectAllBlocks
-- [ ] selectEntityInRange
-- [ ] selectOverlappingEntities
+- [ ] selectFirstEntityOfTypeInRange
+- [ ] findFirstEntityOfTypeInRange
+- [ ] selectFirstOverlappingEntitiesOfTypeInRange
 - [ ] selectionHasEntityType
-- [ ] mergeSelection
-- [ ] getSelection
+- [x] mergeSelection
+- [x] getSelection
 
 ### entity
 - [ ] entityKeyData
