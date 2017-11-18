@@ -90,8 +90,10 @@ import utils from 'draft-js-utils';
 - [ ] selectionHasEntityType
 
 #### data
-- [ ] toRaw
-- [ ] fromRaw
+- [x] toRaw
+- [x] toRawString
+- [x] fromRaw
+- [x] logRaw
 
 ## Support
 
