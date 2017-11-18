@@ -61,9 +61,9 @@ import utils from 'draft-js-utils';
 - [x] getRedoStack
 
 ### contentState
-- [ ] getBlockMap
-- [ ] getSelectionBefore
-- [ ] getSelectionAfter 
+- [x] getBlockMap
+- [x] getSelectionBefore
+- [x] getSelectionAfter 
 
 ### selection
 - [ ] selectionHasStyles
