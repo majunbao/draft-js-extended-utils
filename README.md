@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/webdeveloperpr/draft-js-raw-content-state.svg?branch=master)](https://travis-ci.org/webdeveloperpr/draft-js-raw-content-state)
-# draft-js-raw-content-state
+# draft-js-utils
 
 ## Table of Contents
 
@@ -11,7 +11,7 @@
 ## Installation
 
 ```sh
-  npm i draft-js-raw-content-state --save
+  npm i draft-js-utils --save
 ```
 
 ## Usage
@@ -23,120 +23,75 @@ const rawContentState = new Raw();
 
 ### API
 
-- .addBlock(text, type, data) 
-Adds a new block.
+## character
+- [x] mapSelectedCharacters
 
-- setKey(key)
-Adds a blockKey
+## contentBlock
+- [ ] removeBlockWithKey
+- [ ] addBlockAfterBlockKey
+- [ ] addBlockBeforeBlockKey
+- [ ] addBlockDataToSelectedBlocks
+- [ ] addDataToBlockWithKey
+- [ ] removeDataFromBlockWithKey
+- [ ] removeSelectedBlocks
+- [ ] removeBlockDataFromSelectedBlocks
+- [ ] splitBlock
+- [ ] changeBlockType
+- [ ] getSelectedBlocks
+- [ ] getSelectedBlockKeys
+- [ ] getBlockDataProp
+- [ ] getRangesForInlineStyle
+- [ ] getBlockByIndex
+- [ ] getBlockByKey
+- [ ] getFirstBlock
+- [ ] getLastBlock
+- [ ] getBlockEntityRanges
+- [ ] getBlockLength
+- [ ] removeEmptyBlocks
+- [ ] changeBlockDepth
+- [ ] increaseBlockDepth
+- [ ] decreaseBlockDepth
+- [ ] getStyleRanges
+- [ ] getStyleRangesWhere
+- [ ] getEntityRanges
+- [ ] getEntityRangesWhere
 
-- toRawContentState()
-Exports content as a rawContentState
+## data
+- [ ] toRaw
+- [ ] fromRaw
 
-- isBackward()
-Sets isBackward SelectionState property to true
+## editorState
+- [ ] setUndo
+- [ ] getBlockMap
+- [ ] setEditorState
+- [ ] getUndoStack
+- [ ] getRedoStack
 
-- .addEntity(entity, offset, length)
-Creates a new entity.
+// contentState
+- [ ] getBlockMap
+- [ ] getSelectionBefore
+- [ ] getSelectionAfter 
 
-- .addInlineStyle(style, offset, length)
-Creates a new inline style.
+// selection
+selectionHasStyles
+- [x] collapsedOnEndOffset
+- [x] collapsedOnStartOffset
+- [x] selectAllBlocks
+- [ ] selectEntityInRange
+- [ ] selectOverlappingEntities
+- [ ] selectionHasEntityType
+- [ ] mergeSelection
+- [ ] getSelection
 
-- .anchorKey(offset)
-- .setAnchorKey(offset)
-Sets the anchorKey, you can also provide an offset.
-
-- .focusKey(offset)
-- .setFocusKey(offset)
-Sets the focusKey, you can also provide an offset.
-
-- .collapse(offset)
-Sets focus and anchorKey, you may provide an offset.
-
-- .setData(data)
-Sets the data on the block. 
-
-- .log()
-console.logs the rawContentState.
-
-- .toContentState()
-Converts the raw contentState into a ContentState type object.
-
-- .toEditorState(decorator)
-Converts the raw contentState into an EditorState type object.
-
-### Example
-
-To convert to a raw contentState 
-
-```javascript
-const newEntity = {
-  type: 'CUSTOM_COLOR',
-  mutability: 'MUTABLE',
-  data: { color: 'red' }
-};
-
-const contentState = new Raw()
-  // first block
-  .addBlock('block 1')
-  setKey('edr45')
-  addEntity(newEntity, 2, 4) 
-  
-  // second block
-  .addBlock('block 2')
-  .addInlineStyle('COLOR_RED', 0, 6)
-  .anchorKey(2)
-  .focusKey(4)
-  .toEditorState(); 
-```
-
-Generates
-```json
- {
-  "entityMap": {
-    "0": {
-      "data": {
-        "color": "red"
-      },
-      "type": "CUSTOM_COLOR",
-      "mutability": "MUTABLE"
-    }
-  },
-  "blocks": [
-    {
-      "key": "edr45",
-      "text": "block 1",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [],
-      "entityRanges": [
-        {
-          "key": 0,
-          "offset": 2,
-          "length": 4
-        }
-      ],
-      "data": {}
-    },
-    {
-      "key": "b6ar6",
-      "text": "block 2",
-      "type": "unstyled",
-      "depth": 0,
-      "inlineStyleRanges": [
-        {
-          "offset": 0,
-          "length": 6,
-          "style": "COLOR_RED"
-        }
-      ],
-      "entityRanges": [],
-      "data": {}
-    }
-  ]
-}
-```
-
-You an also generate EditorState and ContentStates typed objects.
+// entity
+- [ ] entityKeyData
+- [ ] entityKeyType
+- [ ] firstEntityOfTypeInRange
+- [ ] createEntity
+- [ ] mergeEntityData
+- [ ] removeEntity
+- [ ] removeEntityOfType
+- [ ] selectionHasEntityType
 
 ## Support
 
