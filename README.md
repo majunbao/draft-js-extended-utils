@@ -56,11 +56,9 @@ import utils from 'draft-js-utils';
 - [ ] getEntityRangesWhere
 
 #### editorState
-- [ ] setUndo
-- [ ] getBlockMap
-- [ ] setEditorState
-- [ ] getUndoStack
-- [ ] getRedoStack
+- [x] setUndo
+- [x] getUndoStack
+- [x] getRedoStack
 
 ### contentState
 - [ ] getBlockMap
