@@ -2,6 +2,55 @@ import { EditorState, Modifier, RichUtils, convertToRaw } from 'draft-js';
 import splitBlock from 'draft-js/lib/splitBlockInContentState';
 import { Map, fromJS, isImmutable } from 'immutable';
 
+export const getSelectedBlocks = editorState => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = contentState.getBlockMap();
+  const startKey = editorState.getSelection().getStartKey();
+  const endKey = editorState.getSelection().getEndKey();
+
+  return blockMap
+    .skipUntil((__, k) => k === startKey)
+    .takeUntil((__, k) => k === endKey)
+    .concat(Map([[endKey, blockMap.get(endKey)]]));
+};
+
+export const getSelectedBlockKeys = editorState => {
+  return (getSelectedBlocks(editorState)
+    .map(block => block.getKey()))
+    .toList()
+    .toJS();
+};
+
+export const getBlockByIndex = (index, editorState) => {
+  return editorState
+    .getCurrentContent()
+    .getBlockMap()
+    .toList()
+    .get(index);
+};
+
+export const getBlockByKey = (key, editorState) => {
+  return editorState
+    .getCurrentContent()
+    .getBlockMap().get(key)
+};
+
+export const getFirstBlock = editorState => {
+  return editorState.getCurrentContent().getFirstBlock();
+};
+
+export const getLastBlock = editorState => {
+  return editorState.getCurrentContent().getLastBlock();
+};
+
+export const getBlockLength = block => {
+  return block.getLength();
+};
+
+export const changeBlockDepth = (depth, block) => {
+  return block.set('depth', depth);
+};
+
 export const addDataToSelectedBlocks = (editorState, data) => {
   const contentState = editorState.getCurrentContent();
   const selection = editorState.getSelection();
@@ -21,22 +70,6 @@ export const addDataToSelectedBlocks = (editorState, data) => {
 
 export const removeAllDataFromSelectedBlocks = editorState => {
   return addDataToSelectedBlocks(editorState, {});
-};
-
-export const getSelectedBlocks = editorState => {
-  const contentState = editorState.getCurrentContent();
-  const blockMap = contentState.getBlockMap();
-  const startKey = editorState.getSelection().getStartKey();
-  const endKey = editorState.getSelection().getEndKey();
-
-  return blockMap
-    .skipUntil((__, k) => k === startKey)
-    .takeUntil((__, k) => k === endKey)
-    .concat(Map([[endKey, blockMap.get(endKey)]]));
-};
-
-export const getSelectedBlockKeys = editorState => {
-  return getSelectedBlocksAsList(editorState).map(block => block.key);
 };
 
 export const removeSelectionBlockData = (editorState, dataPath) => {

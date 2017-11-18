@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/webdeveloperpr/draft-js-raw-content-state.svg?branch=master)](https://travis-ci.org/webdeveloperpr/draft-js-raw-content-state)
+[![Build Status](https://travis-ci.org/webdeveloperpr/draft-js-raw-utils.svg?branch=master)](https://travis-ci.org/webdeveloperpr/draft-js-utils)
 # draft-js-utils
 
 ## Table of Contents
@@ -22,38 +22,58 @@ import utils from 'draft-js-utils';
 
 ### API
 
-### character
-- [x] mapSelectedCharacters
-
 ### contentBlock
+- [x] getBlockByIndex
+- [x] getSelectedBlocks
+- [x] getSelectedBlockKeys
+- [x] getBlockByKey
+- [T] getFirstBlock 
+- [T] getLastBlock
+- [T] getBlockLength
+- [T] changeBlockDepth
+- [ ] changeBlockType
 - [ ] removeBlockWithKey
 - [ ] addBlockAfterBlockKey
 - [ ] addBlockBeforeBlockKey
-- [ ] addBlockDataToSelectedBlocks
+- [ ] addDataToSelectedBlocks
 - [ ] addDataToBlockWithKey
 - [ ] removeDataFromBlockWithKey
 - [ ] removeSelectedBlocks
 - [ ] removeBlockDataFromSelectedBlocks
 - [ ] splitBlock
-- [ ] changeBlockType
-- [ ] getSelectedBlocks
-- [ ] getSelectedBlockKeys
 - [ ] getBlockDataProp
 - [ ] getRangesForInlineStyle
-- [ ] getBlockByIndex
-- [ ] getBlockByKey
-- [ ] getFirstBlock
-- [ ] getLastBlock
 - [ ] getBlockEntityRanges
-- [ ] getBlockLength
 - [ ] removeEmptyBlocks
-- [ ] changeBlockDepth
 - [ ] increaseBlockDepth
 - [ ] decreaseBlockDepth
 - [ ] getStyleRanges
 - [ ] getStyleRangesWhere
 - [ ] getEntityRanges
 - [ ] getEntityRangesWhere
+
+### selection
+- [ ] selectionHasStyles
+- [ ] selectionHasEntityType
+- [x] collapsedOnEndOffset
+- [x] collapsedOnStartOffset
+- [x] selectAllBlocks
+- [ ] selectFirstEntityOfTypeInRange
+- [ ] findFirstEntityOfTypeInRange
+- [ ] selectFirstOverlappingEntitiesOfTypeInRange
+- [x] mergeSelection
+- [x] getSelection
+
+### entity
+- [ ] createEntity
+- [ ] getEntityKeyData
+- [ ] entityKeyType
+- [ ] getEntityKeyRange
+- [ ] removeEntity
+- [ ] mergeEntityData
+- [ ] removeEntityOfType
+- [ ] firstEntityOfTypeInRange
+- [ ] selectionHasEntityType
 
 #### editorState
 - [x] setUndo
@@ -65,27 +85,8 @@ import utils from 'draft-js-utils';
 - [x] getSelectionBefore
 - [x] getSelectionAfter 
 
-### selection
-- [ ] selectionHasStyles
-- [x] collapsedOnEndOffset
-- [x] collapsedOnStartOffset
-- [x] selectAllBlocks
-- [ ] selectFirstEntityOfTypeInRange
-- [ ] findFirstEntityOfTypeInRange
-- [ ] selectFirstOverlappingEntitiesOfTypeInRange
-- [ ] selectionHasEntityType
-- [x] mergeSelection
-- [x] getSelection
-
-### entity
-- [ ] entityKeyData
-- [ ] entityKeyType
-- [ ] firstEntityOfTypeInRange
-- [ ] createEntity
-- [ ] mergeEntityData
-- [ ] removeEntity
-- [ ] removeEntityOfType
-- [ ] selectionHasEntityType
+### character
+- [x] mapSelectedCharacters
 
 #### data
 - [x] toRaw
@@ -95,7 +96,7 @@ import utils from 'draft-js-utils';
 
 ## Support
 
-Please [open an issue](https://github.com/webdeveloperpr/draft-js-raw-content-state/issues) for support.
+Please [open an issue](https://github.com/webdeveloperpr/draft-js-utils/issues) for support.
 
 ## Contributing
 
