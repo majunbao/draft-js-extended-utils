@@ -23,10 +23,10 @@ const rawContentState = new Raw();
 
 ### API
 
-## character
+### character
 - [x] mapSelectedCharacters
 
-## contentBlock
+### contentBlock
 - [ ] removeBlockWithKey
 - [ ] addBlockAfterBlockKey
 - [ ] addBlockBeforeBlockKey
@@ -56,24 +56,20 @@ const rawContentState = new Raw();
 - [ ] getEntityRanges
 - [ ] getEntityRangesWhere
 
-## data
-- [ ] toRaw
-- [ ] fromRaw
-
-## editorState
+#### editorState
 - [ ] setUndo
 - [ ] getBlockMap
 - [ ] setEditorState
 - [ ] getUndoStack
 - [ ] getRedoStack
 
-// contentState
+### contentState
 - [ ] getBlockMap
 - [ ] getSelectionBefore
 - [ ] getSelectionAfter 
 
-// selection
-selectionHasStyles
+### selection
+- [ ] selectionHasStyles
 - [x] collapsedOnEndOffset
 - [x] collapsedOnStartOffset
 - [x] selectAllBlocks
@@ -83,7 +79,7 @@ selectionHasStyles
 - [ ] mergeSelection
 - [ ] getSelection
 
-// entity
+### entity
 - [ ] entityKeyData
 - [ ] entityKeyType
 - [ ] firstEntityOfTypeInRange
@@ -92,6 +88,10 @@ selectionHasStyles
 - [ ] removeEntity
 - [ ] removeEntityOfType
 - [ ] selectionHasEntityType
+
+#### data
+- [ ] toRaw
+- [ ] fromRaw
 
 ## Support
 
