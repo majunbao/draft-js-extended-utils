@@ -8,9 +8,13 @@ import {
   addBlockAfterKey,
   addBlockBeforeKey,
   getSelectedBlocks,
+  decreaseBlockDepth,
+  increaseBlockDepth,
   removeBlockWithKey,
   getSelectedBlockKeys,
-  changeSelectionBlockDepth, increaseBlockDepth, decreaseBlockDepth,
+  setSelectedBlockData,
+  mergeSelectedBlockData,
+  changeSelectionBlockDepth,
 } from '../src/contentBlock';
 
 describe('getSelectedBlocks', () => {
@@ -515,30 +519,47 @@ describe('decreaseBlockDepth', () => {
   });
 });
 
-describe('addBlockDataToSelectedBlocks', () => {
-  it('addBlockDataToSelectedBlocks', () => {
-    //addBlockDataToSelectedBlocks();
+describe('setBlockDataToSelectedBlocks', () => {
+  it('should set new data', () => {
+    const data = { className: 'red' };
+    const editorState = new RawContentState()
+      .addBlock('block1')
+      .anchorKey()
+      .addBlock('block2', 'unstyled')
+      .setData({ color: 'blue' })
+      .addBlock('block3')
+      .focusKey()
+      .toEditorState();
+    const newEditorState = setSelectedBlockData(data, editorState);
+    const blockList = newEditorState.getCurrentContent().getBlockMap().toList();
+    expect(blockList.get(0).getData()).to.deep.equal(data);
+    expect(blockList.get(1).getData()).to.deep.equal(data);
+    expect(blockList.get(2).getData()).to.deep.equal(data);
   });
-
 });
-describe('addDataToBlockWithKey', () => {
-  it('addDataToBlockWithKey', () => {
-    //addDataToBlockWithKey();
+
+describe('mergeBlockDataToSelectedBlocks', () => {
+  it('should merge new data', () => {
+    const data = { className: 'red' };
+    const editorState = new RawContentState()
+      .addBlock('block1')
+      .anchorKey()
+      .addBlock('block2', 'unstyled')
+      .setData({ fontSize: '12px' })
+      .addBlock('block3')
+      .focusKey()
+      .toEditorState();
+    const newEditorState = mergeSelectedBlockData(data, editorState);
+    const blockList = newEditorState.getCurrentContent().getBlockMap().toList();
+    expect(blockList.get(0).getData()).to.deep.equal(data);
+    expect(blockList.get(1).getData()).to.deep.equal({
+      className: 'red',
+      fontSize: '12px'
+    });
+    expect(blockList.get(2).getData()).to.deep.equal(data);
   });
-
 });
-describe('removeDataFromBlockWithKey', () => {
-  it('removeDataFromBlockWithKey', () => {
-    //removeDataFromBlockWithKey();
-  });
 
-});
-describe('removeBlockDataFromSelectedBlocks', () => {
-  it('removeBlockDataFromSelectedBlocks', () => {
-    //removeBlockDataFromSelectedBlocks();
-  });
-
-});
 describe('splitBlock', () => {
   it('splitBlock', () => {
     //splitBlock();

@@ -205,43 +205,31 @@ export const decreaseBlockDepth = editorState => {
   return EditorState.push(editorState, currentContent, 'adjust-depth');
 };
 
-export const addDataToSelectedBlocks = (editorState, data) => {
+export const setSelectedBlockData = (data, editorState) => {
   const contentState = editorState.getCurrentContent();
-  const selection = editorState.getSelection();
-  const updatedContentState = Modifier.mergeBlockData(
-    contentState,
-    selection,
-    fromJS(data)
-  );
-  const newEditorState = EditorState.push(
-    editorState,
-    updatedContentState,
-    'change-block-data'
-  );
+  const blockMap = editorState.getCurrentContent().getBlockMap();
+  const blockFragment = getSelectedBlocks(editorState);
+  const newBlockMap = blockFragment.reduce((acc, block) => {
+    return acc.set(block.getKey(), block.set('data', data));
+  }, Map());
+  const currentContent = contentState.merge({ blockMap: blockMap.merge(newBlockMap) });
 
-  return EditorState.forceSelection(newEditorState, selection);
+  return EditorState.push(editorState, currentContent, 'change-block-data');
 };
 
-export const removeAllDataFromSelectedBlocks = editorState => {
-  return addDataToSelectedBlocks(editorState, {});
+// merge as JS
+export const mergeSelectedBlockData = (data = {}, editorState) => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = editorState.getCurrentContent().getBlockMap();
+  const blockFragment = getSelectedBlocks(editorState);
+  const newBlockMap = blockFragment.reduce((acc, block) => {
+    const blockData = block.getData().merge(data).toJS();
+    return acc.set(block.getKey(), block.set('data', blockData));
+  }, Map());
+  const currentContent = contentState.merge({ blockMap: blockMap.merge(newBlockMap) });
+
+  return EditorState.push(editorState, currentContent, 'change-block-data');
 };
-
-export const removeSelectionBlockData = (editorState, dataPath) => {
-  const oldContentState = editorState.getCurrentContent();
-  const selectedBlockKeys = getSelectedBlockKeys(editorState);
-  const newContentState = reduceAndRemoveBlockData(oldContentState, selectedBlockKeys, dataPath);
-
-  return EditorState.push(editorState, newContentState, 'change-block-data');
-};
-
-export const removeBlockDataForBlockKeys = (editorState, blockKeys, dataPath) => {
-  const oldContentState = editorState.getCurrentContent();
-  const newContentState = reduceAndRemoveBlockData(oldContentState, blockKeys, dataPath);
-
-  return EditorState.push(editorState, newContentState, 'change-block-data');
-};
-
-export const getBlockDataProp = (block, prop) => block.getData().get(prop);
 
 export const splitBlockWithData = (editorState, data = {}, selection) => {
   const contentState = splitBlock(
