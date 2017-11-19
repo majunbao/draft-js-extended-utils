@@ -5,7 +5,7 @@ import {
   getBlockByIndex,
   getSelectedBlocks,
   removeBlockWithKey,
-  getSelectedBlockKeys,
+  getSelectedBlockKeys, getFirstBlock, getLastBlock,
 } from '../src/contentBlock';
 
 describe('getSelectedBlocks', () => {
@@ -265,6 +265,43 @@ describe('removeBlockWithKey', () => {
       })
     });
   });
+});
+
+describe('getFirstBlock', () => {
+  const editorState = new RawContentState()
+    .addBlock('block1')
+    .setKey('key1')
+    .addBlock('block2')
+    .setKey('key2')
+    .addBlock('block3')
+    .setKey('key3')
+    .toEditorState();
+  expect(getFirstBlock(editorState).getKey()).to.equal('key1');
+});
+
+describe('getLastBlock', () => {
+  const editorState = new RawContentState()
+    .addBlock('block1')
+    .setKey('key1')
+    .addBlock('block2')
+    .setKey('key2')
+    .addBlock('block3')
+    .setKey('key3')
+    .toEditorState();
+  expect(getLastBlock(editorState).getKey()).to.equal('key3');
+});
+
+describe('getLastBlock', () => {
+  const editorState = new RawContentState()
+    .addBlock('blockLength 14')
+    .setKey('block1')
+    .addBlock('block2')
+    .setKey('block2')
+    .addBlock('block3')
+    .setKey('block3')
+    .toEditorState();
+  const length = editorState.getCurrentContent().getFirstBlock().getLength();
+  expect(length).to.equal(14);
 });
 
 describe('addBlockAfterBlockKey', () => {
