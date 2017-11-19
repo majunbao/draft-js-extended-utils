@@ -1,6 +1,6 @@
 {
   "name": "draft-js-extended-utils",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "draft-js-extended-utils utils",
   "main": "build/index.js",
   "scripts": {
