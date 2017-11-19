@@ -27,12 +27,12 @@ import utils from 'draft-js-utils';
 - [x] getSelectedBlocks
 - [x] getSelectedBlockKeys
 - [x] getBlockByKey
+- [x] removeBlockWithKey
 - [T] getFirstBlock 
 - [T] getLastBlock
 - [T] getBlockLength
 - [T] changeBlockDepth
 - [ ] changeBlockType
-- [ ] removeBlockWithKey
 - [ ] addBlockAfterBlockKey
 - [ ] addBlockBeforeBlockKey
 - [ ] addDataToSelectedBlocks

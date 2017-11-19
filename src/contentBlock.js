@@ -1,4 +1,4 @@
-import { EditorState, Modifier, RichUtils, convertToRaw } from 'draft-js';
+import { EditorState, Modifier, RichUtils, convertToRaw, SelectionState } from 'draft-js';
 import splitBlock from 'draft-js/lib/splitBlockInContentState';
 import { Map, fromJS, isImmutable } from 'immutable';
 
@@ -33,6 +33,43 @@ export const getBlockByKey = (key, editorState) => {
   return editorState
     .getCurrentContent()
     .getBlockMap().get(key)
+};
+
+// TODO: [] require more testing on to see how undo/redo behaves
+export const removeBlockWithKey = (key, editorState) => {
+  const contentState = editorState.getCurrentContent();
+  const newBlockMap = editorState
+    .getCurrentContent()
+    .getBlockMap()
+    .filter(block => block.get('key') !== key);
+  const prevKey = contentState.getKeyBefore(key);
+  const nextKey = contentState.getKeyAfter(key);
+  const anchorAndFocusKey = prevKey || nextKey;
+
+  // last block and we cannot remove it.
+  if (!anchorAndFocusKey) return editorState;
+
+  const newSelectionAfter = SelectionState
+    .createEmpty(key)
+    .merge({
+      anchorKey: anchorAndFocusKey,
+      focusKey: anchorAndFocusKey,
+      anchorOffset: 0,
+      focusOffset: 0,
+      isBackward: false,
+      hasFocus: true,
+    });
+
+  // move the selection back to what it was before
+  // it might be better if we just move the selection to point to prev block
+  const newContentState = contentState.merge({
+    blockMap: newBlockMap,
+    selectionBefore: contentState.getSelectionAfter(),
+    selectionAfter: newSelectionAfter,
+  });
+
+  return EditorState.push(editorState, newContentState, 'move-block'
+  );
 };
 
 export const getFirstBlock = editorState => {
