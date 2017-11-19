@@ -1,7 +1,7 @@
 {
-  "name": "draft-js-utils",
-  "version": "1.2.5",
-  "description": "draft-js utils",
+  "name": "draft-js-extended-utils",
+  "version": "0.0.1",
+  "description": "draft-js-extended-utils utils",
   "main": "build/index.js",
   "scripts": {
     "dev": "watch 'npm run build' src",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webdeveloperpr/draft-js-utils.git"
+    "url": "git+https://github.com/webdeveloperpr/draft-js-extended-utils.git"
   },
   "keywords": [
     "draft-js",
@@ -30,9 +30,9 @@
   "author": "Luis Betancourt <webdeveloperpr@gmail.com> (https://github.com/webdeveloperpr)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webdeveloperpr/draft-js-utils/issues"
+    "url": "https://github.com/webdeveloperpr/draft-js-extended-utils/issues"
   },
-  "homepage": "https://github.com/webdeveloperpr/draft-js-utils#readme",
+  "homepage": "https://github.com/webdeveloperpr/draft-js-extended-utils#readme",
   "dependencies": {
     "draft-js": "0.10.4",
     "immutable": "3.8.2"

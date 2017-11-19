@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/webdeveloperpr/draft-js-raw-utils.svg?branch=master)](https://travis-ci.org/webdeveloperpr/draft-js-utils)
-# draft-js-utils
+[![Build Status](https://travis-ci.org/webdeveloperpr/draft-js-extended-utils.svg?branch=master)](https://travis-ci.org/webdeveloperpr/draft-js-extended-utils)
+# draft-js-extended-utils
 
 ## Table of Contents
 
@@ -11,13 +11,13 @@
 ## Installation
 
 ```sh
-  npm i draft-js-utils --save
+  npm i draft-js-extended-utils --save
 ```
 
 ## Usage
 
 ```javascript
-import utils from 'draft-js-utils';
+import utils from 'draft-js-extended-utils';
 ```
 
 ### API
@@ -96,7 +96,7 @@ import utils from 'draft-js-utils';
 
 ## Support
 
-Please [open an issue](https://github.com/webdeveloperpr/draft-js-utils/issues) for support.
+Please [open an issue](https://github.com/webdeveloperpr/draft-js-extended-utils/issues) for support.
 
 ## Contributing
 
