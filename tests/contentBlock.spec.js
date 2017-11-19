@@ -5,7 +5,11 @@ import {
   getBlockByIndex,
   getSelectedBlocks,
   removeBlockWithKey,
-  getSelectedBlockKeys, getFirstBlock, getLastBlock,
+  getSelectedBlockKeys,
+  getFirstBlock,
+  getLastBlock,
+  addBlockAfterKey,
+  addBlockBeforeKey,
 } from '../src/contentBlock';
 
 describe('getSelectedBlocks', () => {
@@ -304,18 +308,146 @@ describe('getLastBlock', () => {
   expect(length).to.equal(14);
 });
 
-describe('addBlockAfterBlockKey', () => {
-  it('addBlockAfterBlockKey', () => {
-    //addBlockAfterBlockKey();
+describe('addBlockAfterKey', () => {
+  const editorState = new RawContentState()
+    .addBlock('Block1')
+    .setKey('key1')
+    // We will add a new block here
+    .addBlock('Block3')
+    .setKey('key3')
+    .addBlock('Block4')
+    .setKey('key4')
+    .toEditorState();
+
+  const newBlock = new RawContentState()
+    .addBlock('Block2')
+    .setKey('key2')
+    .toContentState()
+    .getFirstBlock();
+
+  const newEditorState = addBlockAfterKey('key1', newBlock, editorState);
+  const contentState = newEditorState.getCurrentContent();
+  const selection = newEditorState.getSelection();
+  const selectionBefore = contentState.getSelectionBefore();
+  const selectionAfter = contentState.getSelectionAfter();
+  const blockMapSize = newEditorState.getCurrentContent().getBlockMap().size;
+
+  it('it should have blockMap of 4', () => {
+    expect(blockMapSize).to.equal(4)
   });
 
-});
-describe('addBlockBeforeBlockKey', () => {
-  it('addBlockBeforeBlockKey', () => {
-    //addBlockBeforeBlockKey();
+  it('should have added blocks in the right order', () => {
+    const blockList = newEditorState.getCurrentContent().getBlockMap().toList();
+    expect(blockList.get(0).getKey()).to.equal('key1');
+    expect(blockList.get(1).getKey()).to.equal('key2');
+    expect(blockList.get(2).getKey()).to.equal('key3');
+    expect(blockList.get(3).getKey()).to.equal('key4');
   });
 
+  it('should have a new selection collapsed on the new block', () => {
+    expect(selection.toJS()).to.deep.equal({
+      anchorOffset: 0,
+      focusOffset: 0,
+      hasFocus: true,
+      isBackward: false,
+      anchorKey: 'key2',
+      focusKey: 'key2',
+    });
+  });
+
+  it('selectionAfter should be equal to the new selection', () => {
+    expect(selectionAfter.toJS()).to.deep.equal({
+      anchorOffset: 0,
+      focusOffset: 0,
+      hasFocus: true,
+      isBackward: false,
+      anchorKey: 'key2',
+      focusKey: 'key2',
+    });
+  });
+
+  it('selection before should be equal to the previous selection', () => {
+    expect(selectionBefore.toJS()).to.deep.equal({
+      anchorKey: 'key1',
+      anchorOffset: 0,
+      focusKey: 'key1',
+      focusOffset: 0,
+      hasFocus: false,
+      isBackward: false,
+    })
+  });
 });
+
+describe('addBlockBeforeKey', () => {
+  const editorState = new RawContentState()
+  // We will add a new block here
+    .addBlock('Block2')
+    .setKey('key2')
+    .addBlock('Block3')
+    .setKey('key3')
+    .addBlock('Block4')
+    .setKey('key4')
+    .toEditorState();
+
+  const newBlock = new RawContentState()
+    .addBlock('Block1')
+    .setKey('key1')
+    .toContentState()
+    .getFirstBlock();
+
+  const newEditorState = addBlockBeforeKey('key2', newBlock, editorState);
+  const contentState = newEditorState.getCurrentContent();
+  const selection = newEditorState.getSelection();
+  const selectionBefore = contentState.getSelectionBefore();
+  const selectionAfter = contentState.getSelectionAfter();
+  const blockMapSize = newEditorState.getCurrentContent().getBlockMap().size;
+
+  it('it should have blockMap of 4', () => {
+    expect(blockMapSize).to.equal(4)
+  });
+
+  it('should have added blocks in the right order', () => {
+    const blockList = newEditorState.getCurrentContent().getBlockMap().toList();
+    expect(blockList.get(0).getKey()).to.equal('key1');
+    expect(blockList.get(1).getKey()).to.equal('key2');
+    expect(blockList.get(2).getKey()).to.equal('key3');
+    expect(blockList.get(3).getKey()).to.equal('key4');
+  });
+
+  it('should have a new selection collapsed on the new block', () => {
+    expect(selection.toJS()).to.deep.equal({
+      anchorOffset: 0,
+      focusOffset: 0,
+      hasFocus: true,
+      isBackward: false,
+      anchorKey: 'key1',
+      focusKey: 'key1',
+    });
+  });
+
+  it('selectionAfter should be equal to the new selection', () => {
+    expect(selectionAfter.toJS()).to.deep.equal({
+      anchorOffset: 0,
+      focusOffset: 0,
+      hasFocus: true,
+      isBackward: false,
+      anchorKey: 'key1',
+      focusKey: 'key1',
+    });
+  });
+
+  it('selection before should be equal to the previous selection', () => {
+    expect(selectionBefore.toJS()).to.deep.equal({
+      anchorKey: 'key2',
+      anchorOffset: 0,
+      focusKey: 'key2',
+      focusOffset: 0,
+      hasFocus: false,
+      isBackward: false,
+    })
+  });
+});
+
 describe('addBlockDataToSelectedBlocks', () => {
   it('addBlockDataToSelectedBlocks', () => {
     //addBlockDataToSelectedBlocks();

@@ -84,6 +84,80 @@ export const getBlockLength = block => {
   return block.getLength();
 };
 
+export const addBlockAfterKey = (key, block, editorState) => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = contentState.getBlockMap();
+
+  const blockMap1 = blockMap
+    .takeUntil((__, k) => k === key)
+    .concat(Map([
+      [key, blockMap.get(key)],
+      [block.getKey(), block]
+    ]));
+
+  const blockMap2 = blockMap
+    .reverse()
+    .takeUntil((__, k) => k === key)
+    .reverse();
+
+  const newBlockMap = blockMap1.merge(blockMap2);
+  const newSelectionAfter = SelectionState
+    .createEmpty(block.getKey())
+    .merge({
+      anchorKey: block.getKey(),
+      focusKey: block.getKey(),
+      anchorOffset: 0,
+      focusOffset: 0,
+      isBackward: false,
+      hasFocus: true,
+    });
+
+  const newContentState = contentState.merge({
+    blockMap: newBlockMap,
+    selectionBefore: contentState.getSelectionAfter(),
+    selectionAfter: newSelectionAfter,
+  });
+
+  return EditorState.push(editorState, newContentState, 'change-block');
+};
+
+export const addBlockBeforeKey = (key, block, editorState) => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = contentState.getBlockMap();
+
+  const blockMap1 = blockMap
+    .takeUntil((__, k) => k === key)
+    .concat(Map([
+      [block.getKey(), block],
+      [key, blockMap.get(key)],
+    ]));
+
+  const blockMap2 = blockMap
+    .reverse()
+    .takeUntil((__, k) => k === key)
+    .reverse();
+
+  const newBlockMap = blockMap1.merge(blockMap2);
+  const newSelectionAfter = SelectionState
+    .createEmpty(block.getKey())
+    .merge({
+      anchorKey: block.getKey(),
+      focusKey: block.getKey(),
+      anchorOffset: 0,
+      focusOffset: 0,
+      isBackward: false,
+      hasFocus: true,
+    });
+
+  const newContentState = contentState.merge({
+    blockMap: newBlockMap,
+    selectionBefore: contentState.getSelectionAfter(),
+    selectionAfter: newSelectionAfter,
+  });
+
+  return EditorState.push(editorState, newContentState, 'change-block');
+};
+
 export const changeBlockDepth = (depth, block) => {
   return block.set('depth', depth);
 };
