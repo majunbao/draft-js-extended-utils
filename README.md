@@ -27,13 +27,15 @@ import utils from 'draft-js-extended-utils';
 - [x] getSelectedBlocks
 - [x] getSelectedBlockKeys
 - [x] getBlockByKey
-- [x] removeBlockWithKey
 - [x] getFirstBlock 
 - [x] getLastBlock
 - [x] getBlockLength
-- [ ] addBlockAfterKey
-- [ ] addBlockBeforeKey
-- [T] changeBlockDepth
+- [x] addBlockAfterKey
+- [x] addBlockBeforeKey
+- [x] removeBlockWithKey
+- [x] changeSelectionBlockDepth
+- [x] increaseBlockDepth
+- [x] decreaseBlockDepth
 - [ ] changeBlockType
 - [ ] addDataToSelectedBlocks
 - [ ] addDataToBlockWithKey
@@ -45,8 +47,6 @@ import utils from 'draft-js-extended-utils';
 - [ ] getRangesForInlineStyle
 - [ ] getBlockEntityRanges
 - [ ] removeEmptyBlocks
-- [ ] increaseBlockDepth
-- [ ] decreaseBlockDepth
 - [ ] getStyleRanges
 - [ ] getStyleRangesWhere
 - [ ] getEntityRanges

@@ -1,15 +1,16 @@
 import { expect } from 'chai';
 import RawContentState from 'draft-js-raw-content-state';
 import {
+  getLastBlock,
+  getFirstBlock,
   getBlockByKey,
   getBlockByIndex,
+  addBlockAfterKey,
+  addBlockBeforeKey,
   getSelectedBlocks,
   removeBlockWithKey,
   getSelectedBlockKeys,
-  getFirstBlock,
-  getLastBlock,
-  addBlockAfterKey,
-  addBlockBeforeKey,
+  changeSelectionBlockDepth, increaseBlockDepth, decreaseBlockDepth,
 } from '../src/contentBlock';
 
 describe('getSelectedBlocks', () => {
@@ -325,7 +326,7 @@ describe('addBlockAfterKey', () => {
     .toContentState()
     .getFirstBlock();
 
-  const newEditorState = addBlockAfterKey('key1', newBlock, editorState);
+  const newEditorState = addBlockAfterKey(newBlock, 'key1', editorState);
   const contentState = newEditorState.getCurrentContent();
   const selection = newEditorState.getSelection();
   const selectionBefore = contentState.getSelectionBefore();
@@ -395,7 +396,7 @@ describe('addBlockBeforeKey', () => {
     .toContentState()
     .getFirstBlock();
 
-  const newEditorState = addBlockBeforeKey('key2', newBlock, editorState);
+  const newEditorState = addBlockBeforeKey(newBlock, 'key2', editorState);
   const contentState = newEditorState.getCurrentContent();
   const selection = newEditorState.getSelection();
   const selectionBefore = contentState.getSelectionBefore();
@@ -445,6 +446,72 @@ describe('addBlockBeforeKey', () => {
       hasFocus: false,
       isBackward: false,
     })
+  });
+});
+
+describe('changeSelectionBlockDepth', () => {
+  const editorState = new RawContentState()
+    .addBlock('block1')
+    .anchorKey()
+    .addBlock('block2')
+    .addBlock('block3')
+    .focusKey()
+    .toEditorState();
+
+  it('should change the block depth', () => {
+    const newEditorState = changeSelectionBlockDepth(3, editorState);
+    const blockMapList = newEditorState
+      .getCurrentContent()
+      .getBlockMap()
+      .toList();
+    expect(blockMapList.get(0).getDepth()).to.equal(3)
+    expect(blockMapList.get(1).getDepth()).to.equal(3)
+    expect(blockMapList.get(2).getDepth()).to.equal(3)
+  });
+});
+
+describe('increaseBlockDepth', () => {
+  const editorState = new RawContentState()
+    .addBlock('block1')
+    .anchorKey()
+    .addBlock('block2')
+    .addBlock('block3')
+    .focusKey()
+    .toEditorState();
+
+  it('should increase the block depth', () => {
+    const newEditorState = increaseBlockDepth(editorState);
+    const blockMapList = newEditorState
+      .getCurrentContent()
+      .getBlockMap()
+      .toList();
+    expect(blockMapList.get(0).getDepth()).to.equal(1);
+    expect(blockMapList.get(1).getDepth()).to.equal(1);
+    expect(blockMapList.get(2).getDepth()).to.equal(1);
+  });
+});
+
+describe('decreaseBlockDepth', () => {
+  const editorState = new RawContentState()
+    .addBlock('block1')
+    .setDepth(2)
+    .anchorKey()
+    .addBlock('block2')
+    .setDepth(1)
+    .addBlock('block3')
+    .setDepth(0)
+    .focusKey()
+    .toEditorState();
+
+  it('should decrease the block depth and not go below 0', () => {
+    const newEditorState = decreaseBlockDepth(editorState);
+    const blockMapList = newEditorState
+      .getCurrentContent()
+      .getBlockMap()
+      .toList();
+    expect(blockMapList.get(0).getDepth()).to.equal(1);
+    expect(blockMapList.get(1).getDepth()).to.equal(0);
+    expect(blockMapList.get(2).getDepth()).to.equal(0);
   });
 });
 

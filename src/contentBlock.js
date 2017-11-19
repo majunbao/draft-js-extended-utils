@@ -35,7 +35,6 @@ export const getBlockByKey = (key, editorState) => {
     .getBlockMap().get(key)
 };
 
-// TODO: [] require more testing on to see how undo/redo behaves
 export const removeBlockWithKey = (key, editorState) => {
   const contentState = editorState.getCurrentContent();
   const newBlockMap = editorState
@@ -84,7 +83,7 @@ export const getBlockLength = block => {
   return block.getLength();
 };
 
-export const addBlockAfterKey = (key, block, editorState) => {
+export const addBlockAfterKey = (block, key, editorState) => {
   const contentState = editorState.getCurrentContent();
   const blockMap = contentState.getBlockMap();
 
@@ -121,7 +120,7 @@ export const addBlockAfterKey = (key, block, editorState) => {
   return EditorState.push(editorState, newContentState, 'change-block');
 };
 
-export const addBlockBeforeKey = (key, block, editorState) => {
+export const addBlockBeforeKey = (block, key, editorState) => {
   const contentState = editorState.getCurrentContent();
   const blockMap = contentState.getBlockMap();
 
@@ -158,8 +157,52 @@ export const addBlockBeforeKey = (key, block, editorState) => {
   return EditorState.push(editorState, newContentState, 'change-block');
 };
 
-export const changeBlockDepth = (depth, block) => {
-  return block.set('depth', depth);
+// (EditorState, fn) -> BlockMap
+export const reduceBlockMap = (editorState, callback) => {
+  return editorState
+    .getCurrentContent()
+    .getBlockMap()
+    .reduce(callback);
+};
+
+export const changeSelectionBlockDepth = (depth, editorState) => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = editorState.getCurrentContent().getBlockMap();
+  const blockFragment = getSelectedBlocks(editorState);
+  const newBlockMap = blockFragment.reduce((acc, block) => {
+    return acc.set(block.getKey(), block.set('depth', depth));
+  }, Map());
+  const currentContent = contentState.merge({ blockMap: blockMap.merge(newBlockMap) });
+
+  return EditorState.push(editorState, currentContent, 'adjust-depth');
+};
+
+export const increaseBlockDepth = editorState => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = editorState.getCurrentContent().getBlockMap();
+  const blockFragment = getSelectedBlocks(editorState);
+  const newBlockMap = blockFragment.reduce((acc, block) => {
+    const depth = block.getDepth();
+    const newDepth = depth <= 0 ? 1 : depth + 1;
+    return acc.set(block.getKey(), block.set('depth', newDepth));
+  }, Map());
+  const currentContent = contentState.merge({ blockMap: blockMap.merge(newBlockMap) });
+
+  return EditorState.push(editorState, currentContent, 'adjust-depth');
+};
+
+export const decreaseBlockDepth = editorState => {
+  const contentState = editorState.getCurrentContent();
+  const blockMap = editorState.getCurrentContent().getBlockMap();
+  const blockFragment = getSelectedBlocks(editorState);
+  const newBlockMap = blockFragment.reduce((acc, block) => {
+    const depth = block.getDepth();
+    const newDepth = depth <= 0 ? 0 : depth - 1;
+    return acc.set(block.getKey(), block.set('depth', newDepth));
+  }, Map());
+  const currentContent = contentState.merge({ blockMap: blockMap.merge(newBlockMap) });
+
+  return EditorState.push(editorState, currentContent, 'adjust-depth');
 };
 
 export const addDataToSelectedBlocks = (editorState, data) => {
