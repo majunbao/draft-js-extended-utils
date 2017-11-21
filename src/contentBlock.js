@@ -158,7 +158,7 @@ export const addBlockBeforeKey = (block, key, editorState) => {
 };
 
 // (EditorState, fn) -> BlockMap
-export const reduceBlockMap = (editorState, callback) => {
+const reduceBlockMap = (editorState, callback) => {
   return editorState
     .getCurrentContent()
     .getBlockMap()
@@ -217,7 +217,6 @@ export const setSelectedBlockData = (data, editorState) => {
   return EditorState.push(editorState, currentContent, 'change-block-data');
 };
 
-// merge as JS
 export const mergeSelectedBlockData = (data = {}, editorState) => {
   const contentState = editorState.getCurrentContent();
   const blockMap = editorState.getCurrentContent().getBlockMap();
@@ -231,7 +230,7 @@ export const mergeSelectedBlockData = (data = {}, editorState) => {
   return EditorState.push(editorState, currentContent, 'change-block-data');
 };
 
-export const splitBlockWithData = (editorState, data = {}, selection) => {
+const splitBlockWithData = (editorState, data = {}, selection) => {
   const contentState = splitBlock(
     editorState.getCurrentContent(),
     selection || editorState.getSelection()
@@ -243,7 +242,7 @@ export const splitBlockWithData = (editorState, data = {}, selection) => {
   );
 };
 
-export const findBlockStyleRanges = (block, style) => {
+const findBlockStyleRanges = (block, style) => {
   let result = [];
   block.findStyleRanges(
     char => char.hasStyle(style),

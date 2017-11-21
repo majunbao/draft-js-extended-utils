@@ -519,7 +519,7 @@ describe('decreaseBlockDepth', () => {
   });
 });
 
-describe('setBlockDataToSelectedBlocks', () => {
+describe('setSelectedBlockData', () => {
   it('should set new data', () => {
     const data = { className: 'red' };
     const editorState = new RawContentState()
@@ -538,7 +538,7 @@ describe('setBlockDataToSelectedBlocks', () => {
   });
 });
 
-describe('mergeBlockDataToSelectedBlocks', () => {
+describe('mergeSelectedBlockData', () => {
   it('should merge new data', () => {
     const data = { className: 'red' };
     const editorState = new RawContentState()

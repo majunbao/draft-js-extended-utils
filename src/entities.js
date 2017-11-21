@@ -2,7 +2,7 @@ import { EditorState, Modifier, CharacterMetadata } from 'draft-js';
 import { getSelectedBlocksAsList } from './contentBlock';
 import { sliceSelectedBlockCharacters, mapSelectedCharacters } from './characters';
 
-export const selectionHasEntityType = entityType => editorState => {
+const selectionHasEntityType = entityType => editorState => {
   const contentState = editorState.getCurrentContent();
   const selection = editorState.getSelection();
 
@@ -42,7 +42,7 @@ export const selectionHasEntityType = entityType => editorState => {
     });
 };
 
-export const findEntitiesOfType = type => (contentBlock, callback, contentState) => {
+const findEntitiesOfType = type => (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges(
     character => {
       const entityKey = character.getEntity();
@@ -56,7 +56,7 @@ export const findEntitiesOfType = type => (contentBlock, callback, contentState)
   );
 };
 
-export const entityKeyHasType = (contentState, key, entityType = []) => {
+const entityKeyHasType = (contentState, key, entityType = []) => {
   if (!key) {
     return false;
   }
@@ -65,7 +65,7 @@ export const entityKeyHasType = (contentState, key, entityType = []) => {
     type => type === contentState.getEntity(key).getType());
 };
 
-export const entityKeyData = (contentState, entityKey) => {
+const entityKeyData = (contentState, entityKey) => {
   if (!entityKey) {
     return null;
   }
@@ -73,7 +73,7 @@ export const entityKeyData = (contentState, entityKey) => {
   return contentState.getEntity(entityKey).getData();
 };
 
-export const entityKeyType = (contentState, entityKey) => {
+const entityKeyType = (contentState, entityKey) => {
   if (!entityKey) {
     return null;
   }
@@ -81,7 +81,7 @@ export const entityKeyType = (contentState, entityKey) => {
   return contentState.getEntity(entityKey).getType();
 };
 
-export const findFirstEntityOfTypeInRange = entityType => editorState => {
+const findFirstEntityOfTypeInRange = entityType => editorState => {
   const contentState = editorState.getCurrentContent();
   const selection = editorState.getSelection();
   const selectedBlocks = getSelectedBlocksAsList(editorState);
@@ -113,7 +113,7 @@ export const findFirstEntityOfTypeInRange = entityType => editorState => {
   return found;
 };
 
-export const createEntity = (editorState, entity, data = {}) => {
+const createEntity = (editorState, entity, data = {}) => {
   const mutability = entity.mutability;
   const type = entity.type;
   const entityData = data || entity.data;
@@ -131,7 +131,7 @@ export const createEntity = (editorState, entity, data = {}) => {
   return EditorState.push(editorState, newContentState);
 };
 
-export const mergeEntityData = (editorState, entityKey, newObj) => {
+const mergeEntityData = (editorState, entityKey, newObj) => {
   const contentState = editorState.getCurrentContent();
   const newContentState = contentState.mergeEntityData(entityKey, newObj);
 
@@ -157,7 +157,7 @@ const removeCharEntityOfType = (types = []) => (character, editorState) => {
 };
 
 // Removes an entity with the type from the selection, as opposed to removing all entities.
-export const removeEntity = (editorState, types = []) => {
+const removeEntity = (editorState, types = []) => {
   const selection = editorState.getSelection();
   if (!selection.isCollapsed()) {
     return mapSelectedCharacters(removeCharEntityOfType(types))(editorState);
@@ -188,11 +188,11 @@ export const removeEntity = (editorState, types = []) => {
   }));
 };
 
-export const removeEntityOfType = (types = []) => editorState => {
+const removeEntityOfType = (types = []) => editorState => {
   return removeEntity(editorState, types);
 };
 
-export const returnStartOffset = (isBackward, offset, key) => {
+const returnStartOffset = (isBackward, offset, key) => {
   if (isBackward) {
     return {
       focusOffset: offset,
@@ -206,7 +206,7 @@ export const returnStartOffset = (isBackward, offset, key) => {
   };
 };
 
-export const findEntityStartOffsetMatchingTypes = (editorState, types = []) => {
+const findEntityStartOffsetMatchingTypes = (editorState, types = []) => {
   const contentState = editorState.getCurrentContent();
   const selection = editorState.getSelection();
   const startKey = selection.getStartKey();
@@ -249,7 +249,7 @@ export const findEntityStartOffsetMatchingTypes = (editorState, types = []) => {
   return returnStartOffset(isBackward, offset, startKey);
 };
 
-export const returnEndOffset = (isBackward, offset, key) => {
+const returnEndOffset = (isBackward, offset, key) => {
   if (isBackward) {
     return {
       anchorOffset: offset,
@@ -263,7 +263,7 @@ export const returnEndOffset = (isBackward, offset, key) => {
   };
 };
 
-export const findEntityEndOffsetMatchingTypes = (editorState, types = []) => {
+const findEntityEndOffsetMatchingTypes = (editorState, types = []) => {
   const contentState = editorState.getCurrentContent();
   const selection = editorState.getSelection();
   const endKey = selection.getEndKey();
@@ -306,7 +306,7 @@ export const findEntityEndOffsetMatchingTypes = (editorState, types = []) => {
   return returnEndOffset(isBackward, newOffset.offset + 1, endKey);
 };
 
-export const changeSelectionToEntityTypeInRange = (type = []) => editorState => {
+const changeSelectionToEntityTypeInRange = (type = []) => editorState => {
   const types = [].concat(type);
   const startOffsets = findEntityStartOffsetMatchingTypes(editorState, types);
   const endOffsets = findEntityEndOffsetMatchingTypes(editorState, types);

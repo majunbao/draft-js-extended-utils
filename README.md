@@ -36,8 +36,8 @@ import utils from 'draft-js-extended-utils';
 - [x] changeSelectionBlockDepth
 - [x] increaseBlockDepth
 - [x] decreaseBlockDepth
-- [ ] setSelectedBlockData
-- [ ] mergeSelectedBlockData
+- [x] setSelectedBlockData
+- [x] mergeSelectedBlockData
 - [ ] changeBlockType
 - [ ] removeSelectedBlocks
 - [ ] splitBlock
